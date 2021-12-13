@@ -1,0 +1,120 @@
+this,that,answer
+shaved,unshaven,0
+sunshine,rain,1
+hugs,kisses,0
+intelligent,funny,1
+full, half,0
+staycation,trip,1
+hard,fast,0
+mountain,beach,1
+soda,juice,1
+call,text,0
+reading, listening to music,1
+martabak,terang bulan,0
+apple,android,1
+soto,rawon,1
+introvert,extrovert,1
+realist,idealist,0
+cat,dog,1
+sunrise,sunset,1
+kitchen,living room,0
+time machine,magic wand,1
+wfh,wfo,0
+speed,accuracy,1
+painful truth,comforting lie,0
+expensive gift,homemade gift,1
+personality,look,0
+money,time,1
+comedy, horror,0
+amusement park,beach,1
+classical art, modern art,0
+nice car, nice home interior,1
+picnic,fancy dinner,0
+telepathy,teleport,1
+every day,once a year,0
+large crowd, small party,1
+music,podcast,0
+art festival,music festival,1
+money,fame,0
+size,skill,1
+travel to the past,travel to the future,0
+2 minutes,2 hours,1
+night owl,morning person,0
+proposed in public,proposed in private,1
+experienced partner,inexperienced partner,0
+frequent but bad,none at all,1
+ice cubes,feather,0
+shower,rain,1
+romantic,kink,0
+charming,genuine,1
+roller coaster,ferris wheel,0
+dine in,delivery,1
+bar,club,0
+burger,pizza,1
+forehead kisses,neck kisses,0
+cuddle,more,1
+skydiving,mountain climbing,0
+lights on,lights off, 1
+intimate wedding,big wedding,0
+massage from professional,massage from your partner,1
+sedan,suv,0
+fast food,traditional food,1
+wet,dry,0
+perfect teeth,perfect hair,1
+truth,dare,0
+visual,audio,1
+real,artificial,0
+extremely smart,extremely lucky,1
+dragon,unicorn,0
+smart,happy,1
+logical,creative,0
+beauty,intelligence,1
+5 sons,5 daughters,0
+boiled egg,fried egg,1
+touch,taste,0
+captain america,iron man,1
+forget who you were,forget everyone else,0
+coke,sprite,1
+live forever,dream forever,0
+small family,large family,1
+sprite,fanta,0
+perfect job,perfect relationship,1
+good people,smart people,0
+ignored,criticized,1
+forgive,forget,0
+city streets,country hills,1
+automated home,self-driving car,0
+zero hope,false hope,1
+modern,classical,0
+drunk,tipsy,1
+black,white,0
+chocolate,cheese,1
+biscuits,bread,0
+underdressed,overdressed,1
+smooth jazz,techno,0
+formal,casual,1
+concert,plays,0
+traditional,high-tech,1
+clean shaved,facial hair,0
+sugar,spices,1
+amusement park,historical sites,0
+instagram,twitter,1
+candlelight,lamp light,0
+sci-fi,fantasy,1
+tropical,arctic,0
+digital watch,analog watch,1
+ice cream,waffle,0
+detailed,abstract,1
+red,blue,0
+black leather,brown leather,1
+tinder,bumble,0
+kahitna,dewa 19,1
+balcony,kitchen,0
+breakfast,brunch,1
+ice cream,cake,0
+tea,coffee,1
+street food,restaurant,0
+relaxing,adventure,1
+films,books,0
+DJ,band,1
+outdoor,indoor,0
