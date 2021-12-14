@@ -1,120 +1,121 @@
 this,that,answer
-shaved,unshaven,0
-sunshine,rain,1
-hugs,kisses,0
-intelligent,funny,1
-full, half,0
-staycation,trip,1
-hard,fast,0
-mountain,beach,1
-soda,juice,1
-call,text,0
-reading, listening to music,1
-martabak,terang bulan,0
-apple,android,1
-soto,rawon,1
-introvert,extrovert,1
-realist,idealist,0
-cat,dog,1
-sunrise,sunset,1
-kitchen,living room,0
-time machine,magic wand,1
-wfh,wfo,0
-speed,accuracy,1
-painful truth,comforting lie,0
-expensive gift,homemade gift,1
-personality,look,0
-money,time,1
-comedy, horror,0
-amusement park,beach,1
-classical art, modern art,0
-nice car, nice home interior,1
-picnic,fancy dinner,0
-telepathy,teleport,1
-every day,once a year,0
-large crowd, small party,1
-music,podcast,0
-art festival,music festival,1
-money,fame,0
-size,skill,1
-travel to the past,travel to the future,0
-2 minutes,2 hours,1
-night owl,morning person,0
-proposed in public,proposed in private,1
-experienced partner,inexperienced partner,0
-frequent but bad,none at all,1
-ice cubes,feather,0
-shower,rain,1
-romantic,kink,0
-charming,genuine,1
-roller coaster,ferris wheel,0
-dine in,delivery,1
-bar,club,0
-burger,pizza,1
-forehead kisses,neck kisses,0
-cuddle,more,1
-skydiving,mountain climbing,0
-lights on,lights off, 1
-intimate wedding,big wedding,0
-massage from professional,massage from your partner,1
-sedan,suv,0
-fast food,traditional food,1
-wet,dry,0
-perfect teeth,perfect hair,1
-truth,dare,0
-visual,audio,1
-real,artificial,0
-extremely smart,extremely lucky,1
-dragon,unicorn,0
-smart,happy,1
-logical,creative,0
-beauty,intelligence,1
-5 sons,5 daughters,0
-boiled egg,fried egg,1
-touch,taste,0
-captain america,iron man,1
-forget who you were,forget everyone else,0
-coke,sprite,1
-live forever,dream forever,0
-small family,large family,1
-sprite,fanta,0
-perfect job,perfect relationship,1
-good people,smart people,0
-ignored,criticized,1
-forgive,forget,0
-city streets,country hills,1
-automated home,self-driving car,0
-zero hope,false hope,1
-modern,classical,0
-drunk,tipsy,1
-black,white,0
-chocolate,cheese,1
-biscuits,bread,0
-underdressed,overdressed,1
-smooth jazz,techno,0
-formal,casual,1
-concert,plays,0
-traditional,high-tech,1
-clean shaved,facial hair,0
-sugar,spices,1
-amusement park,historical sites,0
-instagram,twitter,1
-candlelight,lamp light,0
-sci-fi,fantasy,1
-tropical,arctic,0
-digital watch,analog watch,1
-ice cream,waffle,0
-detailed,abstract,1
-red,blue,0
-black leather,brown leather,1
-tinder,bumble,0
-kahitna,dewa 19,1
-balcony,kitchen,0
-breakfast,brunch,1
-ice cream,cake,0
-tea,coffee,1
-street food,restaurant,0
-relaxing,adventure,1
-films,books,0
-DJ,band,1
-outdoor,indoor,0
+Shaved,Unshaven,0
+Sunshine,Rain,1
+Hugs,Kisses,0
+Apple,Android,1
+Frequent but Bad,None at All,0
+Full,Half,0
+Staycation,Trip,1
+Hard,Fast,0
+Mountain,Beach,1
+Ice Cubes,Feather,0
+Soda,Juice,1
+Call,Text,0
+Read, Listen to Music,1
+Martabak,Terang Bulan,0
+Soto,Rawon,1
+Introvert,Extrovert,1
+Realist,Idealist,0
+Cat,Dog,1
+Sunrise,Sunset,1
+Kitchen,Living Room,0
+Time Machine,Magic Wand,1
+WFH,WFO,0
+Speed,Accuracy,1
+Painful Truth,Comforting Lie,0
+Expensive Gift,Homemade Gift,1
+Personality,Look,0
+Money,Time,1
+Comedy,Horror,0
+Amusement Park,Beach,1
+Classical Art,Modern Art,0
+Nice Car,Nice Home Interior,1
+Picnic,Fancy Dinner,0
+Telepathy,Teleport,1
+Every Day,Once a Year,0
+Large Crowd, Small Party,1
+Music,Podcast,0
+Art Festival,Music Festival,1
+Money,Fame,0
+Size,Skill,1
+Travel to The Past,Travel to The Future,0
+2 Minutes,2 Hours,1
+Night Owl,Morning Person,0
+Proposed in Public,Proposed in Private,1
+Experienced,Inexperienced,0
+Shower,Rain,1
+Intelligent,Funny,0
+Shower,Bathtub,1
+Romantic,Kink,0
+Charming,Genuine,1
+Roller Coaster,Ferris Wheel,0
+Dine In,Delivery,1
+Bar,Club,0
+Burger,Pizza,1
+Forehead Kisses,Neck Kisses,0
+Cuddle,More,1
+Skydiving,Mountain Climbing,0
+Lights On,Lights Off, 1
+Intimate Wedding,Big Wedding,0
+Fast Food,Traditional Food,1
+Wet,Dry,0
+Perfect Teeth,Perfect Hair,1
+Truth,Dare,0
+Visual,Audio,1
+Real,Artificial,0
+Smart,Lucky,1
+Dragon,Unicorn,0
+Smart,Happy,1
+Logical,Creative,0
+Beauty,Intelligence,1
+5 Sons,5 Daughters,0
+Boiled Egg,Fried Egg,1
+Touch,Taste,0
+Captain America,Iron man,1
+Forget Who You Were,Forget Everyone Else,0
+Coke,Sprite,1
+Live Forever,Dream Forever,0
+Small Family,Large Family,1
+Sprite,Fanta,0
+Perfect Job,Perfect Relationship,1
+Good People,Smart People,0
+Ignored,Criticized,1
+Forgive,Forget,0
+City Streets,Country Hills,1
+Automated Home,Self-driving Car,0
+Zero Hope,False Hope,1
+Modern,Classical,0
+Drunk,Tipsy,1
+Black,White,0
+Chocolate,Cheese,1
+Biscuits,Bread,0
+Underdressed,Overdressed,1
+Smooth jazz,Techno,0
+Formal,Casual,1
+Concert,Plays,0
+Traditional,High-tech,1
+Clean Shaved,Facial Hair,0
+Sugar,Spices,1
+Amusement Park,Historical Sites,0
+Instagram,Twitter,1
+Candlelight,Lamp Light,0
+Sci-fi,Fantasy,1
+Tropical,Arctic,0
+Digital Watch,Analog Watch,1
+Ice Cream,Waffle,0
+Detailed,Abstract,1
+Red,Blue,0
+Black Leather,Brown Leather,1
+Tinder,Bumble,0
+Kahitna,Dewa 19,1
+Balcony,Kitchen,0
+Breakfast,Brunch,1
+Ice Cream,Cake,0
+Tea,Coffee,1
+Street Food,Restaurant,0
+Relaxing,Adventure,1
+Films,Books,0
+DJ,Band,1
+Outdoor,Indoor,0
+Job,Family,1
+Sedan,Suv,0
