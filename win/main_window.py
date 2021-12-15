@@ -1,31 +1,89 @@
 from tkinter import *
-from win.controller import *
+from tkinter.messagebox import askyesno
 from tkcalendar import *
+import webbrowser
 
 
-class Main:
-    def __init__(self, root, window_height=600, window_width=800):
-        # Configure main window properties
-        self.root = root
-        self.screen_w = root.winfo_screenwidth()
-        self.screen_h = root.winfo_screenheight()
-        self.pos_x = (self.screen_w / 2) - (window_width / 2)
-        self.pos_y = (self.screen_h / 2) - (window_height / 2)
-        self.root.geometry(f"{window_width}x{window_height}+{int(self.pos_x)}+{int(self.pos_y)}")
+class MainWindow(Tk):
+    def __init__(self):
+        Tk.__init__(self)
 
+        # Set to borderless window
+        self.overrideredirect(True)
+        self.offset_x = 0
+        self.offset_y = 0
+        self.bind("<Button-1>", self.click_win)
+        self.bind("<B1-Motion>", self.drag_win)
+
+        # Configure window properties
+        self.window_height = 600
+        self.window_width = 800
+        self.config(bg="#A81D24")
+        self.screen_w = self.winfo_screenwidth()
+        self.screen_h = self.winfo_screenheight()
+        self.pos_x = (self.screen_w / 2) - (self.window_width / 2)
+        self.pos_y = (self.screen_h / 2) - (self.window_height / 2)
+        self.geometry(f"{self.window_width}x{self.window_height}+{int(self.pos_x)}+{int(self.pos_y)}")
+
+        # creating a frame and assigning it to container
+        container = Frame(self, height=600, width=800, bg="#A81D24")
+        # specifying the region where the frame is packed in root
+        container.place(x=0, y=0)
+
+        # configuring the location of the container using grid
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        # We will now create a dictionary of frames
+        self.frames = {}
+
+        # we'll create the frames themselves later but let's add the components to the dictionary.
+        for section in (MenuBar, Home, Countdown, ThisThat, Score, RandomFact, Mail, Configure, Guide):
+            frame = section(container, self)
+
+            # the windows class acts as the root window for the frames.
+            self.frames[section] = frame
+
+            frame.config(bg="#DCDCD4", width=800, height=600)
+            frame.place(x=0, y=0)
+
+        # Using a method to switch frames
+        self.show_frame(Home)
+
+    def show_frame(self, section):
+        frame = self.frames[section]
+        # raises the current frame to the top
+        frame.tkraise()
+
+    def drag_win(self, event):
+        psx = super().winfo_pointerx() - self.offset_x
+        psy = super().winfo_pointery() - self.offset_y
+        super().geometry(f"+{psx}+{psy}")
+        return event
+
+    def click_win(self, event):
+        self.offset_x = super().winfo_pointerx() - super().winfo_rootx()
+        self.offset_y = super().winfo_pointery() - super().winfo_rooty()
+        return event
+
+
+class MainMenu(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
         # Set background
         self.canvas = Canvas(
-            self.root,
-            bg="#ffffff",
+            self,
+            bg="white",
             height=600,
             width=800,
             bd=0,
             highlightthickness=0,
             relief="ridge")
         self.canvas.place(x=0, y=0)
+
         self.background_img = PhotoImage(file=f"win/img/background.png")
-        self.background = self.canvas.create_image(
-            400.0, 300.0,
+        self.canvas.create_image(
+            400, 300,
             image=self.background_img)
 
         # Set copyright and versioning
@@ -42,15 +100,17 @@ class Main:
             image=self.close_img,
             borderwidth=0,
             highlightthickness=0,
-            command=quit_app,
+            command=quit,
             relief="flat")
         self.close_button.place(
             x=750, y=25,
             width=20,
             height=20)
 
-        # Menu Bar =====================================================================================================
 
+class MenuBar(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         # Initialize home button
         self.home_img = PhotoImage(file=f"win/img/home_img.png")
         self.home_button = Button(
@@ -58,7 +118,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Home),
             relief="flat")
         self.home_button.place(
             x=25, y=25,
@@ -72,7 +132,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Countdown),
             relief="flat")
         self.countdown_button.place(
             x=170, y=25,
@@ -86,7 +146,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Score),
             relief="flat")
         self.this_that_button.place(
             x=25, y=170,
@@ -100,7 +160,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(RandomFact),
             relief="flat")
         self.random_button.place(
             x=170, y=170,
@@ -114,7 +174,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Mail),
             relief="flat")
         self.mail_button.place(
             x=25, y=315,
@@ -128,7 +188,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Configure),
             relief="flat")
         self.setting_button.place(
             x=170, y=315,
@@ -142,7 +202,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=call,
             relief="flat")
         self.call_button.place(
             x=25, y=460,
@@ -156,7 +216,7 @@ class Main:
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=btn_clicked,
+            command=lambda: controller.show_frame(Guide),
             relief="flat")
         self.guide_button.place(
             x=170, y=460,
@@ -164,28 +224,21 @@ class Main:
             height=120)
 
 
-class Home:
-    def __init__(self, canvas):
-        self.canvas = canvas
+class Home(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.home_title_img = PhotoImage(file=f"win/img/home_title_img.png")
-
-    def show(self):
         self.canvas.create_image(
             375, 168,
             anchor="nw",
             image=self.home_title_img,
             tags="home")
 
-    def hide(self):
-        self.canvas.delete("home")
 
-
-class Countdown:
-    def __init__(self, canvas):
-        self.canvas = canvas
+class Countdown(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.border_img = PhotoImage(file=f"win/img/border_countdown.png")
-
-    def show(self):
         self.canvas.create_image(
             365, 378,
             anchor="nw",
@@ -241,15 +294,12 @@ class Countdown:
             font=("Montserrat-Regular", 12),
             tag="countdown")
 
-    def hide(self):
-        self.canvas.delete("countdown")
 
-
-class ThisThat:
-    def __init__(self, canvas):
-        self.canvas = canvas
-
+class ThisThat(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.this_button = Button(
+            self,
             text="Lorem Ipsum Dolor Sit Amet",
             wraplength=165,
             font=("Montserrat-Medium", 14),
@@ -263,6 +313,7 @@ class ThisThat:
             relief="flat")
 
         self.that_button = Button(
+            self,
             text="Lorem Ipsum Dolor Sit Amet",
             wraplength=165,
             font=("Montserrat-Medium", 14),
@@ -275,17 +326,6 @@ class ThisThat:
             command=btn_clicked,
             relief="flat")
 
-        self.border_this = PhotoImage(file=f"win/img/border_this.png")
-        self.border_score = PhotoImage(file=f"win/img/border_score.png")
-        self.play_img = PhotoImage(file=f"win/img/play_img.png")
-        self.play_button = Button(
-            image=self.play_img,
-            borderwidth=0,
-            highlightthickness=0,
-            command=btn_clicked,
-            relief="flat")
-
-    def show_main(self):
         self.canvas.create_text(
             375, 95,
             text="This or That?",
@@ -312,6 +352,7 @@ class ThisThat:
             width=170,
             height=115)
 
+        self.border_this = PhotoImage(file=f"win/img/border_this.png")
         self.canvas.create_image(
             365, 370,
             anchor="nw",
@@ -326,13 +367,19 @@ class ThisThat:
             font=("Montserrat-Regular", 12),
             tag="this_main")
 
-    def hide_main(self):
-        self.canvas.delete("this_main")
-        self.this_button.place_forget()
-        self.that_button.place_forget()
 
-    def show_score(self):
-        self.hide_main()
+class Score(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
+
+        self.play_img = PhotoImage(file=f"win/img/play_img.png")
+        self.play_button = Button(
+            self,
+            image=self.play_img,
+            borderwidth=0,
+            highlightthickness=0,
+            command=btn_clicked,
+            relief="flat")
         self.play_button.place(
             x=581, y=454,
             width=174,
@@ -355,6 +402,7 @@ class ThisThat:
             justify="center",
             tags="this_score")
 
+        self.border_score = PhotoImage(file=f"win/img/border_score.png")
         self.canvas.create_image(
             365, 270,
             anchor="nw",
@@ -370,24 +418,18 @@ class ThisThat:
             font=("Montserrat-Regular", 14),
             tags="this_score")
 
-    def hide_score(self):
-        self.canvas.delete("this_score")
-        self.play_button.place_forget()
 
-
-class RandomFact:
-    def __init__(self, canvas):
-        self.canvas = canvas
-
+class RandomFact(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.refresh_img = PhotoImage(file="win/img/refresh_img.png")
         self.refresh_button = Button(
+            self,
             image=self.refresh_img,
             borderwidth=0,
             highlightthickness=0,
             command=btn_clicked,
             relief="flat")
-
-    def show(self):
         self.refresh_button.place(
             x=705, y=108,
             width=27,
@@ -411,16 +453,10 @@ class RandomFact:
             font=("Montserrat-Regular", 16),
             tags="random_fact")
 
-    def hide(self):
-        self.canvas.delete("random_fact")
-        self.refresh_button.place_forget()
 
-
-class Mail:
-    def __init__(self, canvas):
-        self.canvas = canvas
-
-    def show(self):
+class Mail(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.canvas.create_text(
             375, 95,
             text="Dear Bit,",
@@ -452,23 +488,10 @@ class Mail:
             font=("Montserrat-Regular", 11),
             tags="mail")
 
-    def hide(self):
-        self.canvas.delete("mail")
 
-
-class Setting:
-    def __init__(self, root, canvas):
-        self.root = root
-        self.canvas = canvas
-
-        self.calendar = Calendar(
-            self.root,
-            selectmode='day',
-            year=2022,
-            month=1,
-            day=7)
-
-    def show(self):
+class Configure(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.canvas.create_text(
             375, 95,
             text="Setting",
@@ -477,27 +500,29 @@ class Setting:
             font=("Montserrat-Medium", 27),
             tags="mail")
 
+        self.calendar = Calendar(
+            self,
+            selectmode='day',
+            year=2022,
+            month=1,
+            day=7)
+
         self.calendar.place(
             x=375, y=170,
             width=350,
             height=225)
 
-    def hide(self):
-        self.canvas.delete("setting")
 
-
-class Guide:
-    def __init__(self, canvas):
-        self.canvas = canvas
-
-    def show(self):
+class Guide(MainMenu):
+    def __init__(self, parent, controller):
+        MainMenu.__init__(self, parent)
         self.canvas.create_text(
             375, 95,
             text="F.A.Q.",
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Medium", 27),
-            tags="mail")
+            tags="guide")
 
         self.canvas.create_text(
             375, 170, width=375,
@@ -511,8 +536,18 @@ class Guide:
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Regular", 11),
-            tags="mail")
+            tags="guide")
+
+
+def call():
+    if askyesno(title="Confirmation", message="This action will open web browser. Continue?"):
+        webbrowser.open('wa.me/6281334455285')
 
 
 def btn_clicked():
     print("clicked")
+
+
+if __name__ == "__main__":
+    testObj = MainWindow()
+    testObj.mainloop()
