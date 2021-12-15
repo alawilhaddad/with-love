@@ -1,3 +1,5 @@
+import time
+from datetime import datetime
 from tkinter import *
 from tkinter.messagebox import askyesno
 from tkcalendar import *
@@ -38,7 +40,7 @@ class MainWindow(Tk):
         self.frames = {}
 
         # we'll create the frames themselves later but let's add the components to the dictionary.
-        for section in (MenuBar, Home, Countdown, ThisThat, Score, RandomFact, Mail, Configure, Guide):
+        for section in (MenuButton, Home, Countdown, ThisThat, Score, RandomFact, Mail, Configure, Guide):
             frame = section(container, self)
 
             # the windows class acts as the root window for the frames.
@@ -50,6 +52,7 @@ class MainWindow(Tk):
         # Using a method to switch frames
         self.show_frame(Home)
 
+    # Click and drag
     def show_frame(self, section):
         frame = self.frames[section]
         # raises the current frame to the top
@@ -108,7 +111,7 @@ class MainMenu(Frame):
             height=20)
 
 
-class MenuBar(MainMenu):
+class MenuButton(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
         # Initialize home button
@@ -238,6 +241,8 @@ class Home(MainMenu):
 class Countdown(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.schedule = datetime(2022, 1, 7, 8, 5, 0, 0)
+
         self.border_img = PhotoImage(file=f"win/img/border_countdown.png")
         self.canvas.create_image(
             365, 378,
@@ -253,7 +258,7 @@ class Countdown(MainMenu):
             font=("Montserrat-Medium", 27),
             tags="countdown")
 
-        self.canvas.create_text(
+        self.days_text = self.canvas.create_text(
             550, 145,
             text="100 Hari",
             fill="#232325",
@@ -261,8 +266,8 @@ class Countdown(MainMenu):
             font=("Montserrat-Regular", 60),
             tags="countdown")
 
-        self.canvas.create_text(
-            550, 225,
+        self.hour_text = self.canvas.create_text(
+            550, 230,
             text="06:04:11",
             fill="#232325",
             anchor="n",
@@ -277,7 +282,7 @@ class Countdown(MainMenu):
             font=("Montserrat-SemiBold", 11),
             tags="countdown")
 
-        self.canvas.create_text(
+        self.schedule_text = self.canvas.create_text(
             375, 330,
             text="6 Januari 2022 | 09:00",
             fill="#232325",
@@ -285,7 +290,7 @@ class Countdown(MainMenu):
             font=("Montserrat-Medium", 11),
             tags="countdown")
 
-        self.canvas.create_text(
+        self.messages = self.canvas.create_text(
             390, 446, width=320,
             text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
                  "Sed mi odio, commodo vel est et, bibendum auctor lacus.",
@@ -293,6 +298,35 @@ class Countdown(MainMenu):
             anchor="w",
             font=("Montserrat-Regular", 12),
             tag="countdown")
+
+        self.update_time()
+
+    def update_time(self):
+        current_time = datetime.now()
+        # current_time = datetime(2022, 1, 18, 13, 15, 0, 0)
+        diff = self.schedule - current_time
+        days = diff.days
+        hours = str((diff.seconds // 3600)).zfill(2)
+        minutes = str((3720 // 60) % 60).zfill(2)
+        seconds = str((diff.seconds % 3600) % 60).zfill(2)
+        if int(days) <= 0:
+            days, hours, minutes, seconds = ["00", "00", "00", "00"]
+            messages = "Yeay! mas udah pulang yahh. Ayo cepetan redeem voucher Bit. " \
+                       "Kalo ternyata Mas udah on duty lagi, ganti tanggal pulang Mas di setting yaa"
+        else:
+            messages = "Ditahan dulu ya kangennya, sayang. Mas masih mengusahakan tabungan demi 24/7 kita. " \
+                       "Bentar lagi Mas pulang kok. See you soon, Sayaang"
+        self.canvas.itemconfig(
+            self.days_text,
+            text=f"{days} Hari")
+        self.canvas.itemconfig(
+            self.hour_text,
+            text=f"{hours}:{minutes}:{seconds}")
+        self.canvas.itemconfig(
+            self.messages,
+            text=messages)
+
+        self.canvas.after(1000, self.update_time)
 
 
 class ThisThat(MainMenu):
@@ -550,4 +584,5 @@ def btn_clicked():
 
 if __name__ == "__main__":
     testObj = MainWindow()
+    testObj.show_frame(Countdown)
     testObj.mainloop()

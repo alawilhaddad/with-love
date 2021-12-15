@@ -1,4 +1,4 @@
-from win.main_window import *
+from main_window import *
 
 
 if __name__ == "__main__":
