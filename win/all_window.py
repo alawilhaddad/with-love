@@ -1,10 +1,11 @@
 import random
 from datetime import datetime
 from tkinter import *
-from tkinter.messagebox import askyesno
+from tkinter.messagebox import askyesno, showinfo
 from tkcalendar import *
 import webbrowser
-import var
+from var import var
+from configparser import ConfigParser
 
 
 class MainWindow(Tk):
@@ -262,50 +263,17 @@ class Countdown(MainMenu):
             anchor="n",
             font=("Montserrat-Regular", 60),
             tags="countdown")
-
-        self.hour_text = self.canvas.create_text(
-            450, 234,
-            text="06:04:11",
+        self.time_text = self.canvas.create_text(
+            435, 240,
+            text="06",
             fill="#232325",
             anchor="nw",
-            font=("Montserrat-Regular", 36),
-            tags="countdown")
-
-        self.minute_text = self.canvas.create_text(
-            518, 234,
-            text="06:04:11",
-            fill="#232325",
-            anchor="nw",
-            font=("Montserrat-Regular", 36),
-            tags="countdown")
-
-        self.second_text = self.canvas.create_text(
-            601, 234,
-            text="06:04:11",
-            fill="#232325",
-            anchor="nw",
-            font=("Montserrat-Regular", 36),
-            tags="countdown")
-
-        self.canvas.create_text(
-            505, 230,
-            text=":",
-            fill="#232325",
-            anchor="n",
-            font=("Montserrat-Regular", 36),
-            tags="countdown")
-
-        self.canvas.create_text(
-            590, 230,
-            text=":",
-            fill="#232325",
-            anchor="n",
-            font=("Montserrat-Regular", 36),
+            font=("Courier New", 36),
             tags="countdown")
 
         self.canvas.create_text(
             375, 315,
-            text="Flight Schedule:",
+            text="Schedule:",
             fill="#232325",
             anchor="nw",
             font=("Montserrat-SemiBold", 11),
@@ -313,7 +281,7 @@ class Countdown(MainMenu):
 
         self.schedule_text = self.canvas.create_text(
             375, 335,
-            text="6 Januari 2022 | 09:00",
+            text=var.schedule.strftime("%A, %d %B %Y | %H:%M:%S"),
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Medium", 11),
@@ -344,8 +312,8 @@ class Countdown(MainMenu):
         hours = str((diff.seconds // 3600)).zfill(2)
         minutes = str((3720 // 60) % 60).zfill(2)
         seconds = str((diff.seconds % 3600) % 60).zfill(2)
-        if int(days) <= 0:
-            days, hours, minutes, seconds = ["00", "00", "00", "00"]
+        if int(diff.total_seconds()) <= 0:
+            days, hours, minutes, seconds = ["0", "00", "00", "00"]
             messages = "Yeay! mas udah pulang yahh. Ayo cepetan redeem voucher Bit. " \
                        "Kalo ternyata Mas udah on duty lagi, ganti tanggal pulang Mas di setting yaa"
         else:
@@ -355,15 +323,10 @@ class Countdown(MainMenu):
         self.canvas.itemconfig(
             self.days_text,
             text=f"{days} Hari")
+
         self.canvas.itemconfig(
-            self.hour_text,
-            text=f"{hours}")
-        self.canvas.itemconfig(
-            self.minute_text,
-            text=f"{minutes}")
-        self.canvas.itemconfig(
-            self.second_text,
-            text=f"{seconds}")
+            self.time_text,
+            text=f"{hours}:{minutes}:{seconds}")
 
         self.canvas.itemconfig(
             self.messages,
@@ -376,11 +339,11 @@ class ThisThat(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
 
-        with open("this or that.txt", "r") as file:
+        with open("win/this or that.txt", "r") as file:
             self.this_that = []
             for line in file.readlines():
                 self.this_that.append(line.strip("\n").split(","))
-        self.active = self.this_that
+        self.active = list(self.this_that)
         self.item = []
         self.count = 1
 
@@ -465,19 +428,19 @@ class ThisThat(MainMenu):
     def next(self, controller, answer):
         if int(answer) == int(self.item[2]):
             var.score += 10
-        print(self.item[2])
         if self.count != var.question_limit:
             self.count += 1
             self.canvas.itemconfig(self.number, text=f"Question #{str(self.count).zfill(2)}")
             self.rdm()
         elif self.count == var.question_limit:
+            var.score = var.score // (var.question_limit * 10) * 100
             controller.show_frame(Score)
             self.restart()
 
     def restart(self):
         self.count = 1
         var.score = 0
-        self.active = self.this_that
+        self.active = list(self.this_that)
         self.rdm()
         self.canvas.itemconfig(self.number, text=f"Question #{str(self.count).zfill(2)}")
 
@@ -509,7 +472,7 @@ class Score(MainMenu):
 
         self.canvas.create_text(
             375, 95,
-            text="Score:",
+            text="Similarity:",
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Medium", 27),
@@ -553,7 +516,7 @@ class RandomFact(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
         self.controller = controller
-        with open("random_facts.txt", "r") as file:
+        with open("win/random_facts.txt", "r") as file:
             self.facts = []
             for line in file.readlines():
                 self.facts.append(line.strip("\n").split("|"))
@@ -638,10 +601,52 @@ class Configure(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
         self.controller = controller
+        self.limit = IntVar(value=var.question_limit)
+        self.hour = IntVar(value=var.hour)
+        self.minute = IntVar(value=var.minute)
 
         self.canvas.create_text(
             375, 95,
-            text="Setting",
+            text="Question Limit",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Medium", 27),
+            tags="mail")
+
+        self.limit_box = Spinbox(
+            self,
+            from_=5,
+            to=20,
+            format="%02.0f",
+            wrap=True,
+            textvariable=self.limit,
+            width=2,
+            state="readonly",
+            font=("Montserrat-Medium", 11),
+            justify=CENTER)
+        self.limit_box.place(x=375, y=170, width=75, height=25)
+
+        self.save_img = PhotoImage(file="win/img/save_img.png")
+        self.save_limit = Button(
+            self,
+            image=self.save_img,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.save_limit,
+            relief="flat")
+        self.save_limit.place(
+            x=650, y=170,
+            width=75,
+            height=25,
+            anchor="nw")
+
+        self.canvas.create_line(
+            365, 202, 735, 202,
+            fill="#232325",
+            width=2)
+        self.canvas.create_text(
+            375, 195,
+            text="Schedule",
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Medium", 27),
@@ -650,14 +655,98 @@ class Configure(MainMenu):
         self.calendar = Calendar(
             self,
             selectmode='day',
-            year=2022,
-            month=1,
-            day=7)
-
+            font=("Montserrat-Medium", 10),
+            year=var.year,
+            month=var.month,
+            day=var.day)
         self.calendar.place(
-            x=375, y=170,
+            x=375, y=270,
             width=350,
-            height=225)
+            height=200)
+
+        self.hour_box = Spinbox(
+            self,
+            from_=0,
+            to=23,
+            format="%02.0f",
+            wrap=True,
+            textvariable=self.hour,
+            width=2,
+            state="readonly",
+            font=("Montserrat-Medium", 11),
+            justify=CENTER)
+        self.hour_box.place(x=375, y=480, width=75, height=25)
+
+        self.minute_box = Spinbox(
+            self,
+            from_=00,
+            to=59,
+            format="%02.0f",
+            wrap=True,
+            textvariable=self.minute,
+            width=2,
+            state="readonly",
+            font=("Montserrat-Medium", 11),
+            justify=CENTER)
+        self.minute_box.place(x=468, y=480, width=75, height=25)
+
+        self.canvas.create_text(
+            456, 476,
+            text=":",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Medium", 16),
+            tags="mail")
+
+        self.canvas.create_text(
+            553, 480,
+            text="GMT+7",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Medium", 12),
+            tags="mail")
+
+        self.save_schedule = Button(
+            self,
+            image=self.save_img,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.save_schedule,
+            relief="flat")
+        self.save_schedule.place(
+            x=650, y=505,
+            width=75,
+            height=25,
+            anchor="nw")
+
+    def save_limit(self):
+        var.question_limit = int(self.limit_box.get())
+        config = ConfigParser()
+        config.read("win/config.txt")
+        config.set("this_that", "limit", str(var.question_limit))
+        with open("win/config.txt", "r+") as configfile:
+            config.write(configfile)
+        showinfo(title="Limit Change", message=f"Nah ini udah keganti ya, sayang.\n"
+                                               f'Sekarang soal "this or that"-nya jadi {var.question_limit} soal ya')
+
+    def save_schedule(self):
+        var.month, var.day, var.year = list(map(lambda x: int(x), self.calendar.get_date().split("/")))
+        var.year += 2000
+        var.hour = int(self.hour_box.get())
+        var.minute = int(self.minute_box.get())
+        var.schedule = datetime(var.year, var.month, var.day, var.hour, var.minute, 0, 0)
+
+        config = ConfigParser()
+        config.read("win/config.txt")
+        config.set("schedule", "year", str(var.year))
+        config.set("schedule", "month", str(var.month))
+        config.set("schedule", "day", str(var.day))
+        config.set("schedule", "hour", str(var.hour))
+        config.set("schedule", "minute", str(var.minute))
+        with open("win/config.txt", "w") as configfile:
+            config.write(configfile)
+        showinfo(title="Limit Change", message=f"Sekarang schedulenya jadi:\n"
+                                               f"{var.schedule.strftime('%A, %d %B %Y | %H:%M:%S')}")
 
 
 class Guide(MainMenu):
