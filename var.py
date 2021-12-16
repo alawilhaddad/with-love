@@ -1,3 +1,6 @@
 from datetime import datetime
 
-flight_time = datetime(2022, 1, 7, 8, 5, 0, 0)
+
+schedule = datetime(2022, 1, 7, 8, 5, 0, 0)
+score = 0
+question_limit = 10

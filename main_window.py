@@ -1,9 +1,10 @@
-import time
+import random
 from datetime import datetime
 from tkinter import *
 from tkinter.messagebox import askyesno
 from tkcalendar import *
 import webbrowser
+import var
 
 
 class MainWindow(Tk):
@@ -52,12 +53,12 @@ class MainWindow(Tk):
         # Using a method to switch frames
         self.show_frame(Home)
 
-    # Click and drag
+    # Raises the current frame to the top
     def show_frame(self, section):
         frame = self.frames[section]
-        # raises the current frame to the top
         frame.tkraise()
 
+    # Click and drag window
     def drag_win(self, event):
         psx = super().winfo_pointerx() - self.offset_x
         psy = super().winfo_pointery() - self.offset_y
@@ -149,7 +150,7 @@ class MenuButton(MainMenu):
             borderwidth=0,
             highlightthickness=0,
             activebackground="#232325",
-            command=lambda: controller.show_frame(Score),
+            command=lambda: controller.show_frame(ThisThat),
             relief="flat")
         self.this_that_button.place(
             x=25, y=170,
@@ -230,6 +231,9 @@ class MenuButton(MainMenu):
 class Home(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.controller = controller
+
+        # Set home title
         self.home_title_img = PhotoImage(file=f"win/img/home_title_img.png")
         self.canvas.create_image(
             375, 168,
@@ -241,14 +245,7 @@ class Home(MainMenu):
 class Countdown(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
-        self.schedule = datetime(2022, 1, 7, 8, 5, 0, 0)
-
-        self.border_img = PhotoImage(file=f"win/img/border_countdown.png")
-        self.canvas.create_image(
-            365, 378,
-            anchor="nw",
-            image=self.border_img,
-            tags="countdown")
+        self.controller = controller
 
         self.canvas.create_text(
             375, 95,
@@ -267,8 +264,40 @@ class Countdown(MainMenu):
             tags="countdown")
 
         self.hour_text = self.canvas.create_text(
-            550, 230,
+            450, 234,
             text="06:04:11",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Regular", 36),
+            tags="countdown")
+
+        self.minute_text = self.canvas.create_text(
+            518, 234,
+            text="06:04:11",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Regular", 36),
+            tags="countdown")
+
+        self.second_text = self.canvas.create_text(
+            601, 234,
+            text="06:04:11",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Regular", 36),
+            tags="countdown")
+
+        self.canvas.create_text(
+            505, 230,
+            text=":",
+            fill="#232325",
+            anchor="n",
+            font=("Montserrat-Regular", 36),
+            tags="countdown")
+
+        self.canvas.create_text(
+            590, 230,
+            text=":",
             fill="#232325",
             anchor="n",
             font=("Montserrat-Regular", 36),
@@ -283,11 +312,18 @@ class Countdown(MainMenu):
             tags="countdown")
 
         self.schedule_text = self.canvas.create_text(
-            375, 330,
+            375, 335,
             text="6 Januari 2022 | 09:00",
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Medium", 11),
+            tags="countdown")
+
+        self.border_img = PhotoImage(file=f"win/img/border_countdown.png")
+        self.canvas.create_image(
+            365, 378,
+            anchor="nw",
+            image=self.border_img,
             tags="countdown")
 
         self.messages = self.canvas.create_text(
@@ -303,8 +339,7 @@ class Countdown(MainMenu):
 
     def update_time(self):
         current_time = datetime.now()
-        # current_time = datetime(2022, 1, 18, 13, 15, 0, 0)
-        diff = self.schedule - current_time
+        diff = var.schedule - current_time
         days = diff.days
         hours = str((diff.seconds // 3600)).zfill(2)
         minutes = str((3720 // 60) % 60).zfill(2)
@@ -316,12 +351,20 @@ class Countdown(MainMenu):
         else:
             messages = "Ditahan dulu ya kangennya, sayang. Mas masih mengusahakan tabungan demi 24/7 kita. " \
                        "Bentar lagi Mas pulang kok. See you soon, Sayaang"
+
         self.canvas.itemconfig(
             self.days_text,
             text=f"{days} Hari")
         self.canvas.itemconfig(
             self.hour_text,
-            text=f"{hours}:{minutes}:{seconds}")
+            text=f"{hours}")
+        self.canvas.itemconfig(
+            self.minute_text,
+            text=f"{minutes}")
+        self.canvas.itemconfig(
+            self.second_text,
+            text=f"{seconds}")
+
         self.canvas.itemconfig(
             self.messages,
             text=messages)
@@ -332,6 +375,23 @@ class Countdown(MainMenu):
 class ThisThat(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+
+        with open("this or that.txt", "r") as file:
+            self.this_that = []
+            for line in file.readlines():
+                self.this_that.append(line.strip("\n").split(","))
+        self.active = self.this_that
+        self.item = []
+        self.count = 1
+
+        self.canvas.create_text(
+            375, 95,
+            text="This or That?",
+            fill="#232325",
+            anchor="nw",
+            font=("Montserrat-Medium", 27),
+            tag="this_main")
+
         self.this_button = Button(
             self,
             text="Lorem Ipsum Dolor Sit Amet",
@@ -343,7 +403,7 @@ class ThisThat(MainMenu):
             activebackground="#A81D24",
             borderwidth=3,
             highlightthickness=0,
-            command=btn_clicked,
+            command=lambda: self.next(controller, answer=0),
             relief="flat")
 
         self.that_button = Button(
@@ -357,18 +417,10 @@ class ThisThat(MainMenu):
             activebackground="#A81D24",
             borderwidth=3,
             highlightthickness=0,
-            command=btn_clicked,
+            command=lambda: self.next(controller, answer=1),
             relief="flat")
 
-        self.canvas.create_text(
-            375, 95,
-            text="This or That?",
-            fill="#232325",
-            anchor="nw",
-            font=("Montserrat-Medium", 30),
-            tag="this_main")
-
-        self.canvas.create_text(
+        self.number = self.canvas.create_text(
             375, 140,
             text="Question #01",
             fill="#232325",
@@ -388,36 +440,72 @@ class ThisThat(MainMenu):
 
         self.border_this = PhotoImage(file=f"win/img/border_this.png")
         self.canvas.create_image(
-            365, 370,
+            365, 378,
             anchor="nw",
             image=self.border_this,
             tags="this_score")
 
         self.canvas.create_text(
-            390, 440, width=320,
-            text="Selamat bermain yah sayang, jawabnya yang emang sesuai preferensi kamu aja yaa",
+            390, 446, width=320,
+            text="Selamat bermain yah sayang, jawabnya yang emang sesuai preferensi kamu aja yaa. "
+                 "Kita lihat seberapa banyak kesamaan kita",
             fill="#232325",
             anchor="w",
             font=("Montserrat-Regular", 12),
             tag="this_main")
 
+        self.rdm()
+
+    def rdm(self):
+        self.item = random.choice(self.active)
+        self.active.remove(self.item)
+        self.this_button.config(text=self.item[0])
+        self.that_button.config(text=self.item[1])
+
+    def next(self, controller, answer):
+        if int(answer) == int(self.item[2]):
+            var.score += 10
+        print(self.item[2])
+        if self.count != var.question_limit:
+            self.count += 1
+            self.canvas.itemconfig(self.number, text=f"Question #{str(self.count).zfill(2)}")
+            self.rdm()
+        elif self.count == var.question_limit:
+            controller.show_frame(Score)
+            self.restart()
+
+    def restart(self):
+        self.count = 1
+        var.score = 0
+        self.active = self.this_that
+        self.rdm()
+        self.canvas.itemconfig(self.number, text=f"Question #{str(self.count).zfill(2)}")
+
 
 class Score(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
-
-        self.play_img = PhotoImage(file=f"win/img/play_img.png")
+        self.controller = controller
+        self.messages = ["Let's share our similarities and celebrate our differences",
+                         "A great relationship is about two things: First, appreciating our similarities and second, "
+                         "respecting our differences.",
+                         "Love is the power to see similarity in the dissimilar",
+                         "A great relationship isn't when a perfect couple comes together, "
+                         "but when an imperfect couple learns to enjoy their differences",
+                         "The happiest relationship are between two people that have understanding of their differences"
+                         ""]
+        self.restart = PhotoImage(file=f"win/img/restart.png")
         self.play_button = Button(
             self,
-            image=self.play_img,
+            image=self.restart,
             borderwidth=0,
             highlightthickness=0,
-            command=btn_clicked,
+            command=lambda: controller.show_frame(ThisThat),
             relief="flat")
         self.play_button.place(
-            x=581, y=454,
-            width=174,
-            height=51)
+            x=625, y=460,
+            width=100,
+            height=40)
 
         self.canvas.create_text(
             375, 95,
@@ -427,9 +515,9 @@ class Score(MainMenu):
             font=("Montserrat-Medium", 27),
             tag="this_score")
 
-        self.canvas.create_text(
+        self.score = self.canvas.create_text(
             565, 145, width=300,
-            text="100 %",
+            text=f"{var.score} %",
             fill="#232325",
             anchor="n",
             font=("Montserrat-Medium", 48),
@@ -443,34 +531,48 @@ class Score(MainMenu):
             image=self.border_score,
             tags="this_score")
 
-        self.canvas.create_text(
-            387, 345, width=350,
+        self.message_text = self.canvas.create_text(
+            387, 355, width=320,
             text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mi odio, commodo vel est et, bibendum "
                  "auctor lacus.",
             fill="#232325",
             anchor="w",
-            font=("Montserrat-Regular", 14),
+            font=("Montserrat-Regular", 12),
             tags="this_score")
+
+    def tkraise(self, aboveThis=None):
+        # Get the selected item from start_page
+        self.canvas.itemconfig(self.message_text, text=random.choice(self.messages))
+        self.canvas.itemconfig(self.score, text=f"{var.score} %")
+
+        # Call the real .tkraise
+        super().tkraise(aboveThis)
 
 
 class RandomFact(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.controller = controller
+        with open("random_facts.txt", "r") as file:
+            self.facts = []
+            for line in file.readlines():
+                self.facts.append(line.strip("\n").split("|"))
+
         self.refresh_img = PhotoImage(file="win/img/refresh_img.png")
         self.refresh_button = Button(
             self,
             image=self.refresh_img,
             borderwidth=0,
             highlightthickness=0,
-            command=btn_clicked,
+            command=self.randomize,
             relief="flat")
         self.refresh_button.place(
-            x=705, y=108,
+            x=710, y=109,
             width=27,
             height=27,
             anchor="nw")
 
-        self.canvas.create_text(
+        self.number = self.canvas.create_text(
             375, 95,
             text="Random Fact #01",
             fill="#232325",
@@ -478,19 +580,28 @@ class RandomFact(MainMenu):
             font=("Montserrat-Medium", 27),
             tags="random_fact")
 
-        self.canvas.create_text(
-            375, 166, width=350,
+        self.fact = self.canvas.create_text(
+            375, 300, width=350,
             text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mi odio, commodo vel est et, bibendum "
                  "auctor lacus. Aenean egestas augue sed rhoncus iaculis",
             fill="#232325",
-            anchor="nw",
+            anchor="w",
             font=("Montserrat-Regular", 16),
             tags="random_fact")
+
+        self.randomize()
+
+    def randomize(self):
+        fact = random.choice(self.facts)
+        self.canvas.itemconfig(self.number, text=f"Random Fact #{fact[0].zfill(2)}")
+        self.canvas.itemconfig(self.fact, text=fact[1])
 
 
 class Mail(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.controller = controller
+
         self.canvas.create_text(
             375, 95,
             text="Dear Bit,",
@@ -526,6 +637,8 @@ class Mail(MainMenu):
 class Configure(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.controller = controller
+
         self.canvas.create_text(
             375, 95,
             text="Setting",
@@ -550,6 +663,7 @@ class Configure(MainMenu):
 class Guide(MainMenu):
     def __init__(self, parent, controller):
         MainMenu.__init__(self, parent)
+        self.controller = controller
         self.canvas.create_text(
             375, 95,
             text="F.A.Q.",
@@ -578,11 +692,7 @@ def call():
         webbrowser.open('wa.me/6281334455285')
 
 
-def btn_clicked():
-    print("clicked")
-
-
 if __name__ == "__main__":
     testObj = MainWindow()
-    testObj.show_frame(Countdown)
+    testObj.show_frame(RandomFact)
     testObj.mainloop()

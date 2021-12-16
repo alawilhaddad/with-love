@@ -1,4 +1,3 @@
-this,that,answer
 Shaved,Unshaven,0
 Sunshine,Rain,1
 Hugs,Kisses,0
@@ -11,7 +10,7 @@ Mountain,Beach,1
 Ice Cubes,Feather,0
 Soda,Juice,1
 Call,Text,0
-Read, Listen to Music,1
+Read,Listen to Music,1
 Martabak,Terang Bulan,0
 Soto,Rawon,1
 Introvert,Extrovert,1
@@ -33,7 +32,7 @@ Nice Car,Nice Home Interior,1
 Picnic,Fancy Dinner,0
 Telepathy,Teleport,1
 Every Day,Once a Year,0
-Large Crowd, Small Party,1
+Large Crowd,Small Party,1
 Music,Podcast,0
 Art Festival,Music Festival,1
 Money,Fame,0
@@ -46,7 +45,7 @@ Experienced,Inexperienced,0
 Shower,Rain,1
 Intelligent,Funny,0
 Shower,Bathtub,1
-Romantic,Kink,0
+Romantic,Kinky,0
 Charming,Genuine,1
 Roller Coaster,Ferris Wheel,0
 Dine In,Delivery,1
@@ -118,4 +117,5 @@ Films,Books,0
 DJ,Band,1
 Outdoor,Indoor,0
 Job,Family,1
-Sedan,Suv,0
+Sedan,SUV,0
+Ed Sheeran,Bruno Mars,1
