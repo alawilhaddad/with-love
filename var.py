@@ -27,6 +27,7 @@ class Configuration:
                 self.initiate()
         except configparser.NoSectionError:
             self.initiate()
+
     def initiate(self):
         text = ["[schedule]\n",
                 "year = 2022\n",
@@ -40,5 +41,6 @@ class Configuration:
         with open("win/config.txt", "w") as configfile:
             configfile.writelines(text)
         self.__init__()
+
 
 var = Configuration()

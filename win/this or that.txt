@@ -119,3 +119,34 @@ Outdoor,Indoor,0
 Job,Family,1
 Sedan,SUV,0
 Ed Sheeran,Bruno Mars,1
+Cookies,Brownies,0
+Playing Games,Watching Movie,1
+Fruits,Vegetables,0
+Apartment,House,1
+Different Interest,Same Interest,0
+Rewind Time,Pause Time,1
+Half-Full,Half-Empty,0
+Photo Booth,Random Selfies,1
+Art Museum,History Museum,0
+Overly Optimistic,Overly Pessimistic,1
+False Hope,Unnecessary Anxiety,0
+Underestimated,Overestimated,1
+See The Future,Change The Past,0
+Shy,Confident,1
+Brilliant and Ugly,Good Look and Dumb,0
+Love,Be Loved,1
+Explore The Sea,Explore The Space,0
+Noisy Club,Quiet Lounge,1
+Generalist,Specialist,0
+Obese,Really Skinny,1
+Quintuplets,None,0
+Fast Writer,Fast Reader,1
+12 Kids,None,0
+In a Car,In a Tent,1
+Swallow,Spit,0
+Good Friends,Best Partner,1
+Long,Short,0
+In the Car,In the Shower,1
+On The Lips Over and Over,All Over,1
+In an Elevator,In The Back of A Taxi,0
+Against The Wall,In The Bed,1

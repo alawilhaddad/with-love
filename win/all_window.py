@@ -334,6 +334,13 @@ class Countdown(MainMenu):
 
         self.canvas.after(1000, self.update_time)
 
+    def tkraise(self, aboveThis=None):
+        # Get the selected item from start_page
+        self.canvas.itemconfig(self.schedule_text, text=var.schedule.strftime("%A, %d %B %Y | %H:%M:%S"))
+
+        # Call the real .tkraise
+        super().tkraise(aboveThis)
+
 
 class ThisThat(MainMenu):
     def __init__(self, parent, controller):
@@ -726,8 +733,8 @@ class Configure(MainMenu):
         config.set("this_that", "limit", str(var.question_limit))
         with open("win/config.txt", "r+") as configfile:
             config.write(configfile)
-        showinfo(title="Limit Change", message=f"Nah ini udah keganti ya, sayang.\n"
-                                               f'Sekarang soal "this or that"-nya jadi {var.question_limit} soal ya')
+        showinfo(title="Question Limit Changed", message=f"Sip, udah kesave ya, sayang.\n\n"
+                                                         f'Question limit/game:{var.question_limit} Question')
 
     def save_schedule(self):
         var.month, var.day, var.year = list(map(lambda x: int(x), self.calendar.get_date().split("/")))
@@ -745,8 +752,9 @@ class Configure(MainMenu):
         config.set("schedule", "minute", str(var.minute))
         with open("win/config.txt", "w") as configfile:
             config.write(configfile)
-        showinfo(title="Limit Change", message=f"Sekarang schedulenya jadi:\n"
-                                               f"{var.schedule.strftime('%A, %d %B %Y | %H:%M:%S')}")
+        showinfo(title="Schedule Changed", message=f"Sip, udah kesave ya, sayang.\n\n"
+                                                   f"Schedule:\n"
+                                                   f"{var.schedule.strftime('%A, %d %B %Y | %H:%M:%S')}")
 
 
 class Guide(MainMenu):
