@@ -441,7 +441,7 @@ class ThisThat(MainMenu):
             self.canvas.itemconfig(self.number, text=f"Question #{str(self.count).zfill(2)}")
             self.rdm()
         elif self.count == var.question_limit:
-            var.score = var.score // (var.question_limit * 10) * 100
+            var.score = int(var.score / (var.question_limit * 10) * 100)
             controller.show_frame(Score)
             self.restart()
 
