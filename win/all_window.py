@@ -417,8 +417,9 @@ class ThisThat(MainMenu):
 
         self.canvas.create_text(
             390, 446, width=320,
-            text="Selamat bermain yah sayang, jawabnya yang emang sesuai preferensi kamu aja yaa. "
-                 "Kita lihat seberapa banyak kesamaan kita",
+            text="Jawabnya sesuai preferensi Bit aja yaa. "
+                 "Hasil akhirnya ga ngaruh apa-apa kok. Sama asik, beda juga asik. "
+                 "Enjoy the game ya, bby.",
             fill="#232325",
             anchor="w",
             font=("Montserrat-Regular", 12),
@@ -775,9 +776,9 @@ class Guide(MainMenu):
                  "A : Bisa klik setting sayang, nanti ganti tanggalnya di situ yaa.\n\n"
                  "Q : Mas, mau request tambahin fitur dong. Bisa ngga?\n"
                  "A : Bisa sayang, coba kontak hotline aja yaa.\n\n"
-                 'Q : Score di "This or That" itu gimana maksudnya?"\n'
+                 'Q : Similarity di "This or That" itu gimana maksudnya?"\n'
                  'A : Nah jadi di tiap pertanyaan itu jawaban Bit bakal dibandingin sama preferensi pilihan Mas. '
-                 'Dari situ keluar scorenya',
+                 'Dari situ keluar nilai similarity kita.',
             fill="#232325",
             anchor="nw",
             font=("Montserrat-Regular", 11),
